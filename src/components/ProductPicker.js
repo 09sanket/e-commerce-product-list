@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { fetchProducts } from "../api/products";
-import "./ProductPicker.css";
+
 
 const ProductPicker = ({ isOpen, onClose, onSelect }) => {
   const [searchTerm, setSearchTerm] = useState("");
