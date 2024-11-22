@@ -1,16 +1,21 @@
 .product-list {
-    margin: 1rem 0;
-  }
-  
-  .product-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-    margin-bottom: 0.5rem;
-    background: #f9f9f9;
-    border-radius: 4px;
-  }
+  border: 1px solid #ccc;
+  padding: 16px;
+  background-color: #f9f9f9;
+  min-height: 200px;
+}
+
+.product-item {
+  padding: 16px;
+  margin-bottom: 8px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
   
   .product-details {
     display: flex;

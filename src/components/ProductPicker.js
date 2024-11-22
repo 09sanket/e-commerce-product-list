@@ -12,10 +12,27 @@ const ProductPicker = ({ isOpen, onClose, onSelect }) => {
     if (isOpen) loadProducts();
   }, [isOpen, page, searchTerm]);
 
+  // const loadProducts = async () => {
+  //   const result = await fetchProducts(searchTerm, page);
+  //   setProducts((prev) => [...prev, ...result]);
+  // };
+
+  // const loadProducts = async () => {
+  //   const result = await fetchProducts(searchTerm, page);
+  //   setProducts((prev) => [...prev, ...(result || [])]);
+  // };
+
   const loadProducts = async () => {
-    const result = await fetchProducts(searchTerm, page);
-    setProducts((prev) => [...prev, ...result]);
+    try {
+      const result = await fetchProducts(searchTerm, page);
+      console.log("Fetched products:", result);
+      setProducts((prev) => [...prev, ...(result || [])]);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
   };
+  
+  
 
   const handleScroll = (e) => {
     const { scrollTop, clientHeight, scrollHeight } = e.target;

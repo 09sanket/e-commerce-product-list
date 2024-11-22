@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { DragDropContext } from "react-beautiful-dnd";
 import ProductList from "./components/ProductList";
 import ProductPicker from "./components/ProductPicker";
 import AddProductButton from "./components/AddProductButton";
@@ -12,7 +13,13 @@ const App = () => {
   const handleAddProduct = () => {
     setProducts((prev) => [
       ...prev,
-      { id: Date.now(), title: "New Product", variants: [], discount: "" },
+      {
+        id: Date.now().toString(), // Ensure the ID is a string
+        title: "New Product",
+        variants: [{ id: 1, title: "Default Variant", price: "0" }],
+        discount: "",
+        image: { src: "" }, // Provide a default image object
+      },
     ]);
   };
 
@@ -28,9 +35,13 @@ const App = () => {
 
   const handleProductSelect = (selectedProduct) => {
     const updatedProducts = [...products];
+
     if (editingProductIndex !== null) {
-      updatedProducts.splice(editingProductIndex, 1, ...selectedProduct);
+      updatedProducts[editingProductIndex] = selectedProduct;
+    } else {
+      updatedProducts.push(selectedProduct);
     }
+
     setProducts(updatedProducts);
     setPickerOpen(false);
     setEditingProductIndex(null);
@@ -43,30 +54,40 @@ const App = () => {
   };
 
   const handleDragEnd = (result) => {
-    if (!result.destination) return;
-    const updatedProducts = [...products];
-    const [removed] = updatedProducts.splice(result.source.index, 1);
-    updatedProducts.splice(result.destination.index, 0, removed);
+    const { source, destination } = result;
+
+    // Check if dropped outside a droppable area
+    if (!destination) return;
+
+    // Check if dropped in the same position
+    if (source.index === destination.index) return;
+
+    // Reorder products
+    const updatedProducts = Array.from(products);
+    const [movedItem] = updatedProducts.splice(source.index, 1);
+    updatedProducts.splice(destination.index, 0, movedItem);
+
     setProducts(updatedProducts);
   };
 
   return (
-    <div className="app">
-      <h1 className="app-title">Product Management</h1>
-      <ProductList
-        products={products}
-        onDragEnd={handleDragEnd}
-        onRemove={handleRemoveProduct}
-        onEdit={handleEditProduct}
-        applyDiscount={handleApplyDiscount}
-      />
-      <AddProductButton onClick={handleAddProduct} />
-      <ProductPicker
-        isOpen={isPickerOpen}
-        onClose={() => setPickerOpen(false)}
-        onSelect={handleProductSelect}
-      />
-    </div>
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <div className="app">
+        <h1 className="app-title">Product Management</h1>
+        <ProductList
+          products={products}
+          onRemove={handleRemoveProduct}
+          onEdit={handleEditProduct}
+          applyDiscount={handleApplyDiscount}
+        />
+        <AddProductButton onClick={handleAddProduct} />
+        <ProductPicker
+          isOpen={isPickerOpen}
+          onClose={() => setPickerOpen(false)}
+          onSelect={handleProductSelect}
+        />
+      </div>
+    </DragDropContext>
   );
 };
 

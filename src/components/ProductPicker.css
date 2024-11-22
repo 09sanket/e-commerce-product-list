@@ -1,31 +1,120 @@
+/* Modal Styles */
 .product-picker-modal {
-    width: 500px;
-    height: 600px;
-    margin: auto;
-    background: #fff;
-    padding: 1rem;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  .search-bar input {
-    width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  
-  .product-list {
-    height: calc(100% - 60px);
-    overflow-y: scroll;
-  }
-  
-  .product-item {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem;
-    border-bottom: 1px solid #eee;
-    cursor: pointer;
-  }
-  
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 60%;
+  max-width: 800px;
+  margin: auto;
+  outline: none;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.product-picker-overlay {
+  background: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/* Search Bar */
+.search-bar input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box; /* To ensure full width including padding */
+}
+
+/* Product List */
+.product-list {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
+}
+
+.product-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 10px;
+}
+
+.product-item:last-child {
+  border-bottom: none;
+}
+
+/* Product Image */
+.product-item img {
+  width: 60px; /* Fixed size */
+  height: 60px;
+  object-fit: cover; /* Ensure the image fits the box without stretching */
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+/* Product Title */
+.product-item span {
+  flex-grow: 1;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Toggle Variants Button */
+.toggle-variants {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+.toggle-variants:hover {
+  text-decoration: none;
+}
+
+/* Variants Section */
+.product-variants {
+  margin-left: 20px;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.variant-item {
+  font-size: 14px;
+  color: #555;
+  padding: 5px 0;
+}
+
+/* Add Product Button */
+.add-product-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.add-product-btn:hover {
+  background-color: #0056b3;
+}
