@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
-import ProductList from "./components/ProductList";
+import ProductList from "./components/ProductList"; // Assuming you have a ProductList component to display the products
 import ProductPicker from "./components/ProductPicker";
 import AddProductButton from "./components/AddProductButton";
 import "./App.css";
@@ -14,11 +14,11 @@ const App = () => {
     setProducts((prev) => [
       ...prev,
       {
-        id: Date.now().toString(), // Ensure the ID is a string
+        id: Date.now().toString(),
         title: "New Product",
         variants: [{ id: 1, title: "Default Variant", price: "0" }],
         discount: "",
-        image: { src: "" }, // Provide a default image object
+        image: { src: "" },
       },
     ]);
   };
@@ -55,14 +55,8 @@ const App = () => {
 
   const handleDragEnd = (result) => {
     const { source, destination } = result;
+    if (!destination) return; // If dropped outside
 
-    // Check if dropped outside a droppable area
-    if (!destination) return;
-
-    // Check if dropped in the same position
-    if (source.index === destination.index) return;
-
-    // Reorder products
     const updatedProducts = Array.from(products);
     const [movedItem] = updatedProducts.splice(source.index, 1);
     updatedProducts.splice(destination.index, 0, movedItem);
@@ -71,7 +65,7 @@ const App = () => {
   };
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
+    <DragDropContext onDragEnd={handleDragEnd}> {/* Wrap everything in DragDropContext */}
       <div className="app">
         <h1 className="app-title">Product Management</h1>
         <ProductList
