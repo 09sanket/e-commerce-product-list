@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Droppable, Draggable } from "react-beautiful-dnd";
+import { FaEdit } from "react-icons/fa"; // Import an edit icon
+
 import "./ProductList.css";
 
 const ProductList = ({ products, onRemove, onEdit, applyDiscount }) => {
+  // State to track the visibility of the discount controls for each product
+  const [showDiscountControls, setShowDiscountControls] = useState(
+    Array(products.length).fill(false) // Initialize as false, meaning no discount is shown initially
+  );
+
+  const handleAddDiscount = (index) => {
+    const updatedControls = [...showDiscountControls];
+    updatedControls[index] = true; // Show discount controls for the selected product
+    setShowDiscountControls(updatedControls);
+  };
+
   return (
     <Droppable droppableId="products">
       {(provided) => (
@@ -30,27 +43,43 @@ const ProductList = ({ products, onRemove, onEdit, applyDiscount }) => {
                       alt={product.title || "Product"}
                       className="product-image"
                     />
-                    <input
-                      className="product-title"
-                      value={product.title}
-                      onChange={(e) => onEdit(index, e.target.value)}
-                    />
+                    <div className="product-title-section">
+                      <span className="product-title">{product.title}</span>
+                      <button
+                        className="edit-btn"
+                        onClick={() => onEdit(index, product.title)} // Trigger onEdit with product title
+                      >
+                        <FaEdit />
+                      </button>
+                    </div>
                   </div>
-                  <div className="discount-controls">
-                    <select
-                      className="discount-type"
-                      onChange={(e) => applyDiscount(index, e.target.value)}
+
+                  {/* Add Discount Button */}
+                  {!showDiscountControls[index] ? (
+                    <button
+                      className="add-discount-btn"
+                      onClick={() => handleAddDiscount(index)}
                     >
-                      <option value="percentage">%</option>
-                      <option value="flat">Flat</option>
-                    </select>
-                    <input
-                      type="number"
-                      className="discount-value"
-                      placeholder="Value"
-                      onChange={(e) => applyDiscount(index, e.target.value)}
-                    />
-                  </div>
+                      Add Discount
+                    </button>
+                  ) : (
+                    <div className="discount-controls">
+                      <select
+                        className="discount-type"
+                        onChange={(e) => applyDiscount(index, e.target.value)}
+                      >
+                        <option value="percentage">%</option>
+                        <option value="flat">Flat</option>
+                      </select>
+                      <input
+                        type="number"
+                        className="discount-value"
+                        placeholder="Value"
+                        onChange={(e) => applyDiscount(index, e.target.value)}
+                      />
+                    </div>
+                  )}
+
                   <button
                     className="remove-btn"
                     onClick={() => onRemove(index)}

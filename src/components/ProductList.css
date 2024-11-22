@@ -47,4 +47,44 @@
     color: #ff6b6b;
     cursor: pointer;
   }
+  .product-title-container {
+    display: flex;
+    align-items: center;
+  }
   
+  .edit-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 8px;
+    color: #007bff;
+    font-size: 1.2em;
+  }
+  
+  .edit-btn:hover {
+    color: #0056b3;
+  }
+  .add-discount-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .add-discount-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .discount-controls {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .discount-type,
+  .discount-value {
+    padding: 5px;
+    font-size: 14px;
+  }
