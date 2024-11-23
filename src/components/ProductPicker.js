@@ -7,27 +7,43 @@ const ProductPicker = ({ isOpen, onClose, onSelect }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
-  const [showVariants, setShowVariants] = useState({}); // Track which products have their variants shown
-  const [selectedVariants, setSelectedVariants] = useState({}); // Track selected variants
+  const [showVariants, setShowVariants] = useState({}); 
 
   useEffect(() => {
-    if (isOpen) loadProducts();
-  }, [isOpen, page, searchTerm]);
+    if (isOpen) {
+      setProducts([]); 
+      setPage(1); 
+      loadProducts();
+    }
+  }, [isOpen, searchTerm]);
+
+  useEffect(() => {
+    if (page > 1) {
+      loadProducts();
+    }
+  }, [page]);
 
   const loadProducts = async () => {
     try {
       const result = await fetchProducts(searchTerm, page);
-      setProducts((prev) => [...prev, ...(result || [])]);
+      const productsWithVariants = (result || []).map((product) => ({
+        ...product,
+        variants: generateVariants(product), 
+      }));
+      setProducts((prev) => [...prev, ...productsWithVariants]);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
 
-  const handleScroll = (e) => {
-    const { scrollTop, clientHeight, scrollHeight } = e.target;
-    if (scrollHeight - scrollTop === clientHeight) {
-      setPage((prev) => prev + 1);
-    }
+  const generateVariants = (product) => {
+    // Generate sample variants (for demonstration)
+    return [
+      { id: `${product.id}-small-red`, title: "Small - Red" },
+      { id: `${product.id}-small-white`, title: "Small - White" },
+      { id: `${product.id}-medium-red`, title: "Medium - Red" },
+      { id: `${product.id}-medium-white`, title: "Medium - White" },
+    ];
   };
 
   const toggleVariants = (productId) => {
@@ -37,33 +53,30 @@ const ProductPicker = ({ isOpen, onClose, onSelect }) => {
     }));
   };
 
-  const handleVariantChange = (productId, variant) => {
-    setSelectedVariants((prev) => {
-      const productVariants = prev[productId] || [];
-      const isSelected = productVariants.includes(variant);
+  const handleProductClick = (product) => {
+    // Add the base product to the selected list
+    onSelect({ id: product.id, title: product.title, image: product.image.src });
+  };
 
-      return {
-        ...prev,
-        [productId]: isSelected
-          ? productVariants.filter((v) => v !== variant) // Remove if already selected
-          : [...productVariants, variant], // Add if not selected
-      };
+  const handleVariantClick = (product, variant) => {
+    // Add the selected variant to the list
+    onSelect({
+      id: variant.id,
+      title: `${product.title} - ${variant.title}`,
+      image: product.image.src,
     });
   };
 
-  const addVariants = (productId, productTitle) => {
-    if (selectedVariants[productId]?.length > 0) {
-      selectedVariants[productId].forEach((variant) => {
-        onSelect({
-          id: `${productId}-${variant}`,
-          title: `${productTitle} ${variant}`,
-        });
-      });
+  const handleScroll = (e) => {
+    const { scrollTop, clientHeight, scrollHeight } = e.target;
+    if (scrollHeight - scrollTop === clientHeight) {
+      setPage((prev) => prev + 1);
     }
   };
 
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose} className="product-picker-modal">
+      {/* Search Bar */}
       <div className="search-bar">
         <input
           type="text"
@@ -72,41 +85,44 @@ const ProductPicker = ({ isOpen, onClose, onSelect }) => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
+
+      {/* Product List */}
       <div className="product-list" onScroll={handleScroll}>
         {products.map((product) => (
           <div key={product.id} className="product-item">
-            <div className="product-main">
-              <img src={product.image.src} alt={product.title} />
+            {/* Main Product */}
+            <div
+              className="product-main clickable"
+              onClick={() => handleProductClick(product)}
+            >
+              <img
+                src={product.image.src || "/placeholder.jpg"} 
+                alt={product.title}
+                className="product-image"
+              />
               <span>{product.title}</span>
-              <button
-                className="toggle-variants-btn"
-                onClick={() => toggleVariants(product.id)}
-              >
-                {showVariants[product.id] ? "Hide Variants" : "Show Variants"}
-              </button>
             </div>
+
+            {/* Toggle Variants */}
+            <button
+              className="toggle-variants-btn"
+              onClick={() => toggleVariants(product.id)}
+            >
+              {showVariants[product.id] ? "Hide Variants" : "Show Variants"}
+            </button>
+
+            {/* Variants List */}
             {showVariants[product.id] && (
               <div className="product-variants">
-                {[1, 2, 3].map((variant) => (
-                  <div key={`${product.id}-${variant}`} className="variant-item">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={
-                          selectedVariants[product.id]?.includes(variant) || false
-                        }
-                        onChange={() => handleVariantChange(product.id, variant)}
-                      />
-                      {product.title} {variant}
-                    </label>
+                {product.variants.map((variant) => (
+                  <div
+                    key={variant.id}
+                    className="variant-item clickable"
+                    onClick={() => handleVariantClick(product, variant)}
+                  >
+                    <span>{variant.title}</span>
                   </div>
                 ))}
-                <button
-                  className="add-variants-btn"
-                  onClick={() => addVariants(product.id, product.title)}
-                >
-                  Add Selected Variants
-                </button>
               </div>
             )}
           </div>

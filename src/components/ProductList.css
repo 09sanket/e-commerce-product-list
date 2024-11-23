@@ -1,90 +1,96 @@
+/* Product List Styles */
 .product-list {
-  border: 1px solid #ccc;
-  padding: 16px;
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
   background-color: #f9f9f9;
-  min-height: 200px;
+  margin-bottom: 20px;
 }
 
 .product-item {
-  padding: 16px;
-  margin-bottom: 8px;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: move;
 }
 
-  
-  .product-details {
-    display: flex;
-    align-items: center;
-  }
-  
-  .product-image {
-    width: 50px;
-    height: 50px;
-    margin-right: 1rem;
-    border-radius: 4px;
-    object-fit: cover;
-  }
-  
-  .discount-controls {
-    display: flex;
-    align-items: center;
-  }
-  
-  .discount-type,
-  .discount-value {
-    margin-right: 0.5rem;
-  }
-  
-  .remove-btn {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: #ff6b6b;
-    cursor: pointer;
-  }
-  .product-title-container {
-    display: flex;
-    align-items: center;
-  }
-  
-  .edit-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    margin-left: 8px;
-    color: #007bff;
-    font-size: 1.2em;
-  }
-  
-  .edit-btn:hover {
-    color: #0056b3;
-  }
-  .add-discount-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
-  .add-discount-btn:hover {
-    background-color: #0056b3;
-  }
-  
-  .discount-controls {
-    margin-top: 10px;
-    display: flex;
-    gap: 10px;
-  }
-  
-  .discount-type,
-  .discount-value {
-    padding: 5px;
-    font-size: 14px;
-  }
+.product-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Product Image */
+.product-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+/* Product Title */
+.product-item span {
+  flex-grow: 1;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Edit Button */
+.edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #007bff;
+  font-size: 1.2em;
+}
+
+.edit-btn:hover {
+  color: #0056b3;
+}
+
+/* Add Discount Button */
+.add-discount-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.add-discount-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Remove Button */
+.remove-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #ff6b6b;
+  cursor: pointer;
+}
+
+/* Discount Controls */
+.discount-controls {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.discount-type,
+.discount-value {
+  padding: 5px;
+  font-size: 14px;
+}
+
+.discount-type,
+.discount-value {
+  margin-right: 0.5rem;
+}
